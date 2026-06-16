@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-FASTWAM_ROOT="${FASTWAM_ROOT:-/mnt/nas/luoyulin/qwen-oft/third_party/fastwam}"
+FASTWAM_ROOT="${FASTWAM_ROOT:-/mnt/luoyulin_code/luoyulin/code/qwen-oft/third_party/fastwam}"
 cd "${FASTWAM_ROOT}"
 
 # ============ Proxy for HuggingFace / GitHub ============
@@ -14,7 +14,7 @@ export https_proxy="${https_proxy:-http://127.0.0.1:7897}"
 # ============ Step 1: Create conda env (optional) ============
 # FastWAM requires torch==2.7.1+cu128, which may conflict with qwen-oft env.
 # We try to reuse qwen-oft env if torch>=2.5 is available.
-PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/envs/qwen-oft/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
 if ! "${PYTHON_BIN}" -c "import torch; assert torch.__version__ >= '2.5'" 2>/dev/null; then
     echo "[warn] qwen-oft torch version may be too old for FastWAM (needs >=2.5)."
     echo "       FastWAM officially requires torch==2.7.1+cu128."

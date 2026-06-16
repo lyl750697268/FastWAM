@@ -2,18 +2,18 @@
 """
 Convert RoboTwin C2 HDF5 data to FastWAM Lerobot format.
 
-Reads raw HDF5 episodes from /mnt/data/mixiangju/nas_data/Data/RoboTwin/C2-v0/,
+Reads raw HDF5 episodes from /mnt/luoyulin_code/luoyulin/data/robotwin_raw/C2-v0/,
 extracts 3-camera video + action/state, and writes Lerobot-compatible dataset.
 
 Usage:
     python scripts/convert_c2_hdf5_to_lerobot.py \
-        --raw-root /mnt/data/mixiangju/nas_data/Data/RoboTwin/C2-v0 \
+        --raw-root /mnt/luoyulin_code/luoyulin/data/robotwin_raw/C2-v0 \
         --seed-list data/c2_train_seeds.txt \
         --output-dir data/robotwin2.0_c2/train \
         --action-mode 16d_full
 
     python scripts/convert_c2_hdf5_to_lerobot.py \
-        --raw-root /mnt/data/mixiangju/nas_data/Data/RoboTwin/C2-v0 \
+        --raw-root /mnt/luoyulin_code/luoyulin/data/robotwin_raw/C2-v0 \
         --seed-list data/c2_test_seeds.txt \
         --output-dir data/robotwin2.0_c2/test \
         --action-mode 16d_full

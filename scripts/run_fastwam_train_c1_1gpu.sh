@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-FASTWAM_ROOT="${FASTWAM_ROOT:-/mnt/nas/luoyulin/qwen-oft/third_party/fastwam}"
+FASTWAM_ROOT="${FASTWAM_ROOT:-/mnt/luoyulin_code/luoyulin/code/qwen-oft/third_party/fastwam}"
 cd "${FASTWAM_ROOT}"
 
-PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/envs/qwen-oft/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-/usr/bin/python3}"
 
 C1_TRAIN="${FASTWAM_ROOT}/data/robotwin2.0_c1_new/train"
 if [[ ! -d "${C1_TRAIN}" ]]; then
