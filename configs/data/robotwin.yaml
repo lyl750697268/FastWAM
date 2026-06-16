@@ -31,6 +31,7 @@ train:
   pretrained_norm_stats: ./data/robotwin2.0/dataset_stats.json
   skip_padding_as_possible: false
   concat_multi_camera: "robotwin"
+  episode_filter_path: null
   processor:
     _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
     shape_meta: ${data.train.shape_meta}
@@ -94,6 +95,7 @@ val:
   pretrained_norm_stats: ./data/robotwin2.0/dataset_stats.json
   skip_padding_as_possible: false
   concat_multi_camera: "robotwin"
+  episode_filter_path: null
   processor:
     _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
     shape_meta: ${data.train.shape_meta}

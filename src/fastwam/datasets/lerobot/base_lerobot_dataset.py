@@ -21,18 +21,21 @@ class BaseLerobotDataset(torch.utils.data.Dataset):
 
         # shapes
         shape_meta: Dict[str, Any],
-        action_size: int = 1, 
+        action_size: int = 1,
         past_action_size: int = 0, # Excludes the current frame
-        obs_size: int = 1, # should be 
+        obs_size: int = 1, # should be
         past_obs_size: int = 0,
 
         # train vs val
-        val_set_proportion: float = 0.05, 
+        val_set_proportion: float = 0.05,
         is_training_set: bool = False,
         seed: int = 42,
 
         # sampling
         global_sample_stride: int = 1,
+
+        # episode filtering (C1/C2 split support)
+        episode_filter_path: Optional[str] = None,
     ):
         assert len(dataset_dirs) > 0, "At least one dataset directory is required"
         assert past_action_size == 0
@@ -100,6 +103,23 @@ class BaseLerobotDataset(torch.utils.data.Dataset):
                     episodes.update({meta.repo_id: [episode_indices[i] for i in range(split_idx)]})
                 else:
                     episodes.update({meta.repo_id: [episode_indices[i] for i in range(split_idx, meta.total_episodes)]})
+
+        # Apply episode filter if provided (for C1/C2 split support)
+        if episode_filter_path is not None:
+            filter_path = Path(episode_filter_path)
+            if filter_path.exists():
+                with open(filter_path, "r") as f:
+                    allowed_indices = {int(line.strip()) for line in f if line.strip()}
+                for repo_id in episodes:
+                    before = len(episodes[repo_id])
+                    episodes[repo_id] = [idx for idx in episodes[repo_id] if idx in allowed_indices]
+                    after = len(episodes[repo_id])
+                    logger.info(
+                        f"[episode_filter] {repo_id}: {before} -> {after} episodes "
+                        f"(filtered by {filter_path})"
+                    )
+            else:
+                logger.warning(f"[episode_filter] Filter file not found: {filter_path}")
 
         self.multi_dataset = MultiLeRobotDataset(
             dataset_dirs=self.dataset_dirs,

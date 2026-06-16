@@ -242,3 +242,6 @@ manifest.json
 wandb/
 onelogger.err
 onelogger.log
+/data
+/robotwin2.0_c1_direct
+/robotwin2.0_c1_new
