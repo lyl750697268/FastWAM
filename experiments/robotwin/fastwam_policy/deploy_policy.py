@@ -239,6 +239,22 @@ class WorldActionRobotWinPolicy:
         proprio = self._normalize_state(state_vector)
 
         prompt = DEFAULT_PROMPT.format(task=instruction)
+
+        # DEBUG: log inputs for diagnosing canonical-action outputs
+        print(
+            f"[FastWAM-DEBUG] instruction={instruction!r}\n"
+            f"[FastWAM-DEBUG] prompt={prompt!r}\n"
+            f"[FastWAM-DEBUG] raw_state={np.array2string(state_vector, precision=3, separator=',')}\n"
+            f"[FastWAM-DEBUG] norm_state_shape={proprio.shape} "
+            f"min={proprio.min().item():.3f} max={proprio.max().item():.3f} "
+            f"mean={proprio.mean().item():.3f} std={proprio.std().item():.3f}\n"
+            f"[FastWAM-DEBUG] image_tensor_shape={tuple(image_tensor.shape)} "
+            f"min={image_tensor.min().item():.3f} max={image_tensor.max().item():.3f} "
+            f"mean={image_tensor.mean().item():.3f} "
+            f"dtype={image_tensor.dtype} device={image_tensor.device}",
+            flush=True,
+        )
+
         infer_kwargs = {
             "prompt": prompt,
             "input_image": image_tensor,
@@ -262,6 +278,11 @@ class WorldActionRobotWinPolicy:
 
         action_tensor = pred["action"]  # [T, D]
         action_chunk = self._denormalize_action(action_tensor)[0]  # [T, D]
+        print(
+            f"[FastWAM-DEBUG] pred_action_chunk_shape={action_chunk.shape}\n"
+            f"[FastWAM-DEBUG] pred_action_first={np.array2string(action_chunk[0], precision=4, separator=',')}",
+            flush=True,
+        )
         return action_chunk
 
     def _fill_action_queue(self, observation: Dict[str, Any], instruction: str) -> None:
